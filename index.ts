@@ -117,4 +117,21 @@ const engine = new TransactionEngine(network);
 
 // Sample transaction stream
 const stream: Transaction[] = [
-    { id: 1, paylo
+    { id: 1, payload: "init payment flow", strength: 4, hop: 0 },
+    { id: 2, payload: "sync ledger update", strength: 6, hop: 0 },
+    { id: 3, payload: "final settlement batch", strength: 7, hop: 0 }
+];
+
+// Execute system
+for (const tx of stream) {
+    const result = engine.execute(tx);
+
+    console.log(
+        `TX ${result.transaction.id} => ` +
+        (result.accepted ? "CONFIRMED" : "DECLINED")
+    );
+}
+
+// Debug final state output
+console.log("\n--- FINAL NETWORK OUTPUT ---");
+console.log(JSON.stringify(stream, null, 2));
